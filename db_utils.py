@@ -41,7 +41,7 @@ class SQLite:
                                  position VARCHAR NOT NULL,
                                  company_name VARCHAR NOT NULL,
                                  post_date DATE NOT NULL,
-                                 status VARCHAR DEFAULT NULL
+                                 status VARCHAR DEFAULT unknown
                                  ); """
         self.execute_sql_query(create_table_query)
 
@@ -49,20 +49,35 @@ class SQLite:
         insert_query = "INSERT INTO offers (position, company_name, post_date) VALUES (?, ?, ?)"
         self.execute_sql_query(insert_query, (position, company_name, post_date))
 
-    def update_status(self, status, offer_id):
-        update_query = "UPDATE offers SET status = ? WHERE offer_id = ?"
-        self.execute_sql_query(update_query, (status, offer_id))
+    def update_offer(self, offer_id, column, update_data):
+        update_query = f"UPDATE offers SET {column} = ? WHERE offer_id = ?"
+        self.execute_sql_query(update_query, (update_data, offer_id))
 
     def delete_offer(self, offer_id):
         delete_query = "DELETE FROM offers WHERE offer_id = ?"
         self.execute_sql_query(delete_query, (offer_id, ))
 
-    def show_all_offers(self):
-        query = "SELECT * FROM offers"
+    def show_all_offers(self, order_by):
+        query = f"SELECT * FROM offers ORDER BY {order_by}"
         all_offers = self.execute_sql_query(query, fetch_option = "fetchall")
         return all_offers
 
     def count_offers(self):
-        all_offers = self.show_all_offers()
+        all_offers = self.show_all_offers("offer_id")
         number_of_offers = len(all_offers)
         return number_of_offers
+
+    def look_for_a_company(self, company_name):
+        lower_company_name = company_name.lower()
+        all_offers = self.show_all_offers("offer_id")
+        found_offers = []
+        for offer in all_offers:
+            if lower_company_name in offer[2].lower():
+                query = f"SELECT * FROM offers WHERE LOWER(company_name) = '{offer[2].lower()}'"
+                searching_offer = self.execute_sql_query(query, fetch_option = "fetchall")
+                found_offers.extend(searching_offer)
+        if not found_offers:
+            return None
+        return found_offers
+
+
