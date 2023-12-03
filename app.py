@@ -99,6 +99,7 @@ class App:
 
     def start(self):
         self.is_running = True
+        print("Hello !")
         while self.is_running == True:
             self.read_dict(self.commands)
             try:
