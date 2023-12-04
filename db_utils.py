@@ -62,6 +62,11 @@ class SQLite:
         all_offers = self.execute_sql_query(query, fetch_option = "fetchall")
         return all_offers
 
+    def show_filtered_offers(self, status, order_by):
+        query = f"SELECT * FROM offers WHERE status = '{status}' ORDER BY {order_by}"
+        offers = self.execute_sql_query(query, fetch_option = "fetchall")
+        return offers
+
     def count_offers(self):
         all_offers = self.show_all_offers("offer_id")
         number_of_offers = len(all_offers)
