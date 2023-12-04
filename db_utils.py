@@ -36,13 +36,13 @@ class SQLite:
             print("Cannot create the database connection.")
 
     def create_table(self):
-        create_table_query = """ CREATE TABLE IF NOT EXISTS offers(
+        create_table_query = """CREATE TABLE IF NOT EXISTS offers(
                                  offer_id INTEGER PRIMARY KEY,
                                  position VARCHAR NOT NULL,
                                  company_name VARCHAR NOT NULL,
                                  post_date DATE NOT NULL,
-                                 status VARCHAR DEFAULT 'ACTIVE'
-                                 ); """
+                                 status VARCHAR DEFAULT 'unknown'
+                                 );"""
         self.execute_sql_query(create_table_query)
 
     def insert_to_db(self, position, company_name, post_date):
