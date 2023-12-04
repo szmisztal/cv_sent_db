@@ -9,10 +9,11 @@ class App:
             "1": "add offer to db (position, company name, date)",
             "2": "update offer",
             "3": "show all offers",
-            "4": "count offers",
-            "5": "delete offer (position, company name)",
-            "6": "search for company in offers",
-            "7": "stop app"
+            "4": "show only active or refused offers",
+            "5": "count offers",
+            "6": "delete offer (position, company name)",
+            "7": "search for company in offers",
+            "8": "stop app"
         }
 
     def read_dict(self, dict):
@@ -70,7 +71,7 @@ class App:
             "2": "Order by date"
         }
         self.read_dict(commands)
-        option = input("How want you to order offers ?: ")
+        option = input("How want you to order these offers ?: ")
         if option == "1":
             all_offers = self.db.show_all_offers("offer_id")
         elif option == "2":
@@ -78,6 +79,31 @@ class App:
         else:
             print("Unknown command")
         self.offers_table_template(all_offers)
+
+    def show_active_or_refused_offers(self):
+        commands = {
+            "1": "Only active",
+            "2": "Only refused"
+        }
+        self.read_dict(commands)
+        active_or_not_input = input("Which offers want you to see ?: ")
+        commands_2 = {
+            "1": "Order by ID",
+            "2": "Order by date"
+        }
+        self.read_dict(commands_2)
+        order_input = input("How want you to order these offers ?: ")
+        if active_or_not_input == "1" and order_input == "1":
+            offers = self.db.show_filtered_offers("ACTIVE", "offer_id")
+        elif active_or_not_input == "1" and order_input == "2":
+            offers = self.db.show_filtered_offers("ACTIVE", "post_date")
+        elif active_or_not_input == "2" and order_input == "1":
+            offers = self.db.show_filtered_offers("REFUSED", "offer_id")
+        elif active_or_not_input == "2" and order_input == "2":
+            offers = self.db.show_filtered_offers("REFUSED", "post_date")
+        else:
+            print("Unknown command")
+        self.offers_table_template(offers)
 
     def count_offers(self):
         number_of_offers = self.db.count_offers()
@@ -111,18 +137,21 @@ class App:
                 elif command_input == "3":
                     self.show_all_offers()
                 elif command_input == "4":
-                    self.count_offers()
+                    self.show_active_or_refused_offers()
                 elif command_input == "5":
-                    self.delete_offer()
+                    self.count_offers()
                 elif command_input == "6":
-                    self.search_for_company()
+                    self.delete_offer()
                 elif command_input == "7":
+                    self.search_for_company()
+                elif command_input == "8":
                     print("Bye !")
                     self.is_running = False
                 else:
                     print("Unknown command")
             except Exception as e:
                 print(e)
+
 
 app = App()
 app.start()
