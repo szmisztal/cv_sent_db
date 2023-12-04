@@ -11,7 +11,7 @@ class App:
             "3": "show all offers",
             "4": "show only active or refused offers",
             "5": "count offers",
-            "6": "delete offer (position, company name)",
+            "6": "delete offer",
             "7": "search for company in offers",
             "8": "stop app"
         }
