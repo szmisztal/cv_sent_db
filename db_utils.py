@@ -41,7 +41,7 @@ class SQLite:
                                  position VARCHAR NOT NULL,
                                  company_name VARCHAR NOT NULL,
                                  post_date DATE NOT NULL,
-                                 status VARCHAR DEFAULT unknown
+                                 status VARCHAR DEFAULT 'ACTIVE'
                                  ); """
         self.execute_sql_query(create_table_query)
 
