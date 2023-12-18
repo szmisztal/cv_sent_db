@@ -24,9 +24,15 @@ class App:
 
     def offers_table_template(self, offers):
         print("--------")
-        print("ID:\t | \tPOSITION:\t | \tCOMPANY NAME:\t | \tDATE:\t | \tSTATUS:")
+        print("{:<5} {:<46} {:<20} {:<15} {:<1}".format("ID:", "POSITION:", "COMPANY NAME:", "DATE:", "STATUS:"))
         for offer in offers:
-            print(f"{offer[0]} | {offer[1]} | {offer[2]} | {offer[3]} | {offer[4]}")
+            formatted_id = offer[0]
+            formatted_position = offer[1]
+            formatted_company_name = offer[2]
+            formatted_date = offer[3]
+            formatted_status = offer[4]
+            print("{:<5} {:<46} {:<20} {:<15} {:<1}".format(formatted_id, formatted_position, formatted_company_name,
+                                                             formatted_date, formatted_status))
 
     def add_offer_to_db(self):
         position = input("Position: ")
